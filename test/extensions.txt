@@ -659,7 +659,9 @@ This doesn't have a referent[^nope].
 [^codeblock-note]:
         this is now a code block (8 spaces indentation)
 
-[^1]: Some *bolded* footnote definition.
+[^1]: Some *bolded* footnote definition.[^nested]
+
+[^nested]: Footnotes can be nested.
 
 Hi!
 
@@ -680,7 +682,7 @@ Hi!
 <section class="footnotes">
 <ol>
 <li id="fn1">
-<p>Some <em>bolded</em> footnote definition. <a href="#fnref1" class="footnote-backref">↩</a></p>
+<p>Some <em>bolded</em> footnote definition.<sup class="footnote-ref"><a href="#fn5" id="fnref5">5</a></sup> <a href="#fnref1" class="footnote-backref">↩</a></p>
 </li>
 <li id="fn2">
 <blockquote>
@@ -697,6 +699,9 @@ Hi!
 <pre><code>this is now a code block (8 spaces indentation)
 </code></pre>
 <a href="#fnref4" class="footnote-backref">↩</a>
+</li>
+<li id="fn5">
+<p>Footnotes can be nested. <a href="#fnref5" class="footnote-backref">↩</a></p>
 </li>
 </ol>
 </section>
