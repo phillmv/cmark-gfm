@@ -57,6 +57,9 @@ typedef struct subject{
   bool scanned_for_backticks;
 } subject;
 
+
+void print_type(int cmark_type);
+void dump_node(cmark_node *node);
 // Extensions may populate this.
 static int8_t SKIP_CHARS[256];
 
@@ -72,6 +75,19 @@ static int parse_inline(cmark_parser *parser, subject *subj, cmark_node *parent,
 static void subject_from_buf(cmark_mem *mem, int line_number, int block_offset, subject *e,
                              cmark_chunk *buffer, cmark_map *refmap);
 static bufsize_t subject_find_special_char(subject *subj, int options);
+
+void print_ast(cmark_parser *parser) {
+  cmark_iter *iter = cmark_iter_new(parser->root);
+  cmark_node *cur;
+  cmark_event_type ev_type;
+
+  while ((ev_type = cmark_iter_next(iter)) != CMARK_EVENT_DONE) {
+    cur = cmark_iter_get_node(iter);
+    printf("FULL PRINT [%.*s]\n", cur->as.literal.len, cur->as.literal.data);
+    print_type(cur->type);
+  }
+
+}
 
 // Create an inline with a literal string value.
 static CMARK_INLINE cmark_node *make_literal(subject *subj, cmark_node_type t,
@@ -1045,6 +1061,7 @@ static cmark_node *handle_close_bracket(cmark_parser *parser, subject *subj) {
   int found_label;
   cmark_node *tmp, *tmpnext;
   bool is_image;
+  cmark_node *node;
 
   advance(subj); // advance past ]
   initial_pos = subj->pos;
@@ -1133,14 +1150,127 @@ static cmark_node *handle_close_bracket(cmark_parser *parser, subject *subj) {
   }
 
 noMatch:
+printf("#######\n");
+  print_ast(parser);
+    /* printf("full subject: %s\n", subj->input.data); */
+    printf("full ref: %.*s\n",subj->pos - opener->inl_text->start_column,  subj->input.data + opener->inl_text->start_column);
+  node = opener->inl_text;
+  /* printf("no match, what's in the opener?: %s\n", opener->inl_text->as.literal.data); */
+  dump_node(node);
+  /* printf("end_col? %d\n\n", subj->pos + subj->column_offset + subj->block_offset); */
+  int counter = 0;
+  while((node = node->next)) {
+    printf("count %d\n", ++counter);
+    printf("full literal: %s\n", node->as.literal.data);
+    dump_node(node);
+    printf("token \%.*s\n", (node->end_column - node->start_column) + 1, node->as.literal.data);
+    printf("subject \%.*s\n", ((subj->pos + subj->column_offset + subj->block_offset) - node->start_column) + 1, node->as.literal.data);
+  }
+
+
+  
+  /* printf("nomatch for: %s\n", opener->inl_text->next->as.literal.data); */
+  /* printf("token \%.*s\n", (opener->inl_text->next->end_column - opener->inl_text->next->start_column) + 1, opener->inl_text->next->as.literal.data); */
+  /* dump_node(opener->inl_text->next); */
+  /* print_type(opener->inl_text->next->type); */
+  /* if (opener->inl_text->next->next) { */
+  /*   printf("next-next for: %s\n", opener->inl_text->next->next->as.literal.data); */
+  /*   #<{(| print_type(opener->inl_text->next->next->type); |)}># */
+  /*   dump_node(opener->inl_text->next->next); */
+  /*  */
+  /*   if (!opener->inl_text->next->next->next) { */
+  /*     printf("no 3 next!\n"); */
+  /*   } else { */
+  /*     printf("next-next-next for: %s\n", opener->inl_text->next->next->next->as.literal.data); */
+  /*   dump_node(opener->inl_text->next->next->next); */
+  /*   } */
+  /* } */
+
+/**
+  if (parser->options & CMARK_OPT_FOOTNOTES &&
+      opener->inl_text->next &&
+      opener->inl_text->next->type == CMARK_NODE_TEXT) {
+
+    cmark_chunk *literal = &opener->inl_text->next->as.literal;
+    if (literal->len > 1 && literal->data[0] == '^') {
+      inl = make_simple(subj->mem, CMARK_NODE_FOOTNOTE_REFERENCE);
+      inl->as.literal = cmark_chunk_dup(literal, 1, literal->len - 1);
+      inl->start_line = inl->end_line = subj->line;
+      inl->start_column = opener->inl_text->start_column;
+      inl->end_column = subj->pos + subj->column_offset + subj->block_offset;
+
+      cmark_node_insert_before(opener->inl_text, inl);
+
+      cmark_node *node_to_del;
+      cmark_node *cursor;
+      cursor = opener->inl_text->next;
+      while(cursor) {
+        node_to_del = cursor;
+        cursor = cursor->next;
+        cmark_node_free(node_to_del);
+      }
+      cmark_node_free(opener->inl_text);
+
+      process_emphasis(parser, subj, opener->previous_delimiter);
+      pop_bracket(subj);
+      return NULL;
+    }
+  }**/
+  
+
+  if (parser->options & CMARK_OPT_FOOTNOTES &&
+      opener->inl_text->next &&
+      opener->inl_text->next->type == CMARK_NODE_TEXT) {
+
+    cmark_chunk *literal = &opener->inl_text->next->as.literal;
+    if (literal->len > 1 && literal->data[0] == '^') {
+      printf("whoa nelly! \n");
+      inl = make_simple(subj->mem, CMARK_NODE_FOOTNOTE_REFERENCE);
+
+      int literal_end_column = subj->pos + subj->column_offset + subj->block_offset;
+      int literal_start_column =  opener->inl_text->start_column;
+
+      inl->as.literal = cmark_chunk_dup(literal, 1, (literal_end_column - literal_start_column) - 2);
+      inl->start_line = inl->end_line = subj->line;
+      inl->start_column = opener->inl_text->start_column;
+      inl->end_column = subj->pos + subj->column_offset + subj->block_offset;
+      cmark_node_insert_before(opener->inl_text, inl);
+      dump_node(inl);
+      printf("inl insert \%.*s\n", (inl->end_column - inl->start_column), inl->as.literal.data);
+
+      // walk thru list and free them all up
+      cmark_node *cursor = opener->inl_text->next;
+      cmark_node *temp;
+      while(cursor) {
+        printf("cursor \%.*s\n", (cursor->end_column - cursor->start_column) + 1, cursor->as.literal.data);
+        temp = cursor->next;
+        cmark_node_free(cursor);
+        cursor = temp;
+      }
+
+      /* cmark_node_free(opener->inl_text->next); */
+      cmark_node_free(opener->inl_text);
+      process_emphasis(parser, subj, opener->previous_delimiter);
+      pop_bracket(subj);
+
+      // lol
+       print_ast(parser);
+      return NULL;
+    }
+  }
+
+
+  if(false) {
   // If we fall through to here, it means we didn't match a link.
   // What if we're a footnote link?
   if (parser->options & CMARK_OPT_FOOTNOTES &&
       opener->inl_text->next &&
       opener->inl_text->next->type == CMARK_NODE_TEXT &&
       !opener->inl_text->next->next) {
+  printf("i saw: %s\n", opener->inl_text->next->as.literal.data);
     cmark_chunk *literal = &opener->inl_text->next->as.literal;
     if (literal->len > 1 && literal->data[0] == '^') {
+      printf("boom! reference\n");
       inl = make_simple(subj->mem, CMARK_NODE_FOOTNOTE_REFERENCE);
       inl->as.literal = cmark_chunk_dup(literal, 1, literal->len - 1);
       inl->start_line = inl->end_line = subj->line;
@@ -1154,12 +1284,14 @@ noMatch:
       return NULL;
     }
   }
+  }
 
   pop_bracket(subj); // remove this opener from delimiter list
   subj->pos = initial_pos;
   return make_str(subj, subj->pos - 1, subj->pos - 1, cmark_chunk_literal("]"));
 
 match:
+  printf("matched!!!!\n\n");
   inl = make_simple(subj->mem, is_image ? CMARK_NODE_IMAGE : CMARK_NODE_LINK);
   inl->as.link.url = url;
   inl->as.link.title = title;
@@ -1199,6 +1331,85 @@ match:
   }
 
   return NULL;
+}
+
+void print_type(int cmark_type) {
+  printf("%d:", cmark_type);
+  switch(cmark_type) {
+    case CMARK_NODE_DOCUMENT:
+      printf("node doc\n");
+      break;
+    case CMARK_NODE_BLOCK_QUOTE:
+      printf("node bquote\n");
+      break;
+    case CMARK_NODE_LIST:
+      printf("node list\n");
+      break;
+    case CMARK_NODE_ITEM:
+      printf("node item\n");
+      break;
+    case CMARK_NODE_CODE_BLOCK:
+      printf("node code block\n");
+      break;
+    case CMARK_NODE_HTML_BLOCK:
+      printf("node html block\n");
+      break;
+    case CMARK_NODE_CUSTOM_BLOCK:
+      printf("node custom block\n");
+      break;
+    case CMARK_NODE_PARAGRAPH:
+      printf("node para\n");
+      break;
+    case CMARK_NODE_HEADING:
+      printf("node heading\n");
+      break;
+    case CMARK_NODE_THEMATIC_BREAK:
+      printf("node break\n");
+      break;
+    case CMARK_NODE_FOOTNOTE_DEFINITION:
+      printf("node foot def\n");
+      break;
+    case CMARK_NODE_TEXT:
+      printf("node text\n");
+      break;
+    case CMARK_NODE_SOFTBREAK:
+      printf("node soft\n");
+      break;
+    case CMARK_NODE_LINEBREAK:
+      printf("node line\n");
+      break;
+    case CMARK_NODE_CODE:
+      printf("node code\n");
+      break;
+    case CMARK_NODE_HTML_INLINE:
+      printf("node html\n");
+      break;
+    case CMARK_NODE_CUSTOM_INLINE:
+      printf("node custom\n");
+      break;
+    case CMARK_NODE_EMPH:
+      printf("node emph\n");
+      break;
+    case CMARK_NODE_STRONG:
+      printf("node strong\n");
+      break;
+    case CMARK_NODE_LINK:
+      printf("node link\n");
+      break;
+    case CMARK_NODE_IMAGE:
+      printf("node imag\n");
+      break;
+    case CMARK_NODE_FOOTNOTE_REFERENCE:
+      printf("node foot ref\n");
+      break;
+    default:
+      printf("wut\n");
+      break;
+  }
+}
+
+void dump_node(cmark_node *node) {
+  printf("startline %d, startcol %d, endline %d, endcol %d, offset %d, type %d\n", node->start_line, node->start_column, node->end_line, node->end_column, node->internal_offset, node->type);
 }
 
 // Parse a hard or soft linebreak, returning an inline.
