@@ -649,7 +649,7 @@ This is some text![^1]. Other text.[^footnote].
 
 Here's a thing[^other-note].
 
-And another thing[^codeblock-note].
+And another thing[^codeblock-note]. Footnotes can use lots of different characters.[^sphinx-of-black-quartz_judge-my-vow]
 
 This doesn't have a referent[^nope].
 
@@ -672,17 +672,19 @@ Hi!
 
     or, naturally, simple paragraphs.
 
+[^sphinx-of-black-quartz_judge-my-vow]: This works.
+
 [^unused]: This is unused.
 .
 <p>This is some text!<sup class="footnote-ref"><a href="#fn1" id="fnref1">1</a></sup>. Other text.<sup class="footnote-ref"><a href="#fn2" id="fnref2">2</a></sup>.</p>
 <p>Here's a thing<sup class="footnote-ref"><a href="#fn3" id="fnref3">3</a></sup>.</p>
-<p>And another thing<sup class="footnote-ref"><a href="#fn4" id="fnref4">4</a></sup>.</p>
+<p>And another thing<sup class="footnote-ref"><a href="#fn4" id="fnref4">4</a></sup>. Footnotes can use lots of different characters.<sup class="footnote-ref"><a href="#fn5" id="fnref5">5</a></sup></p>
 <p>This doesn't have a referent[^nope].</p>
 <p>Hi!</p>
 <section class="footnotes">
 <ol>
 <li id="fn1">
-<p>Some <em>bolded</em> footnote definition.<sup class="footnote-ref"><a href="#fn5" id="fnref5">5</a></sup> <a href="#fnref1" class="footnote-backref">↩</a></p>
+<p>Some <em>bolded</em> footnote definition.<sup class="footnote-ref"><a href="#fn6" id="fnref6">6</a></sup> <a href="#fnref1" class="footnote-backref">↩</a></p>
 </li>
 <li id="fn2">
 <blockquote>
@@ -701,7 +703,10 @@ Hi!
 <a href="#fnref4" class="footnote-backref">↩</a>
 </li>
 <li id="fn5">
-<p>Footnotes can be nested. <a href="#fnref5" class="footnote-backref">↩</a></p>
+<p>This works. <a href="#fnref5" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn6">
+<p>Footnotes can be nested. <a href="#fnref6" class="footnote-backref">↩</a></p>
 </li>
 </ol>
 </section>
