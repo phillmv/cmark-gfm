@@ -1140,42 +1140,47 @@ noMatch:
       opener->inl_text->next->type == CMARK_NODE_TEXT) {
 
     cmark_chunk *literal = &opener->inl_text->next->as.literal;
+    // look back to the opening '[', and skip ahead to the next character
     // if we're looking at a '[^' sequence, let's call it a footnote reference.
     if (literal->len > 1 && literal->data[0] == '^') {
       cmark_node *fnref = make_simple(subj->mem, CMARK_NODE_FOOTNOTE_REFERENCE);
 
       // the start and end of the footnote ref is the opening and closing brace
-      // i.e. the subject's current position plus the opener's start_col
+      // i.e. the subject's current position, and the opener's start_column
       int fnref_end_column = subj->pos + subj->column_offset + subj->block_offset;
       int fnref_start_column = opener->inl_text->start_column;
 
-      // although any given node delineates a specific bit of text, its literal
-      // is a pointer to the rest of the line.
+      // any given node delineates a substring of the line being processed,
+      // with the remainder of the line being pointed to thru its 'literal'
+      // struct member.
       // here, we copy the literal's pointer, moving it past the '^' character
       // for a length equal to the size of footnote reference text.
       // i.e. end_col minus start_col, minus the [ and the ^ characters
       //
-      // this copies the whole footnote reference string, even if between the
-      // `opener` and the subject's current position there are any other nodes
+      // this copies the footnote reference string, even if between the
+      // `opener` and the subject's current position there are other nodes
       fnref->as.literal = cmark_chunk_dup(literal, 1, (fnref_end_column - fnref_start_column) - 2);
       fnref->start_line = fnref->end_line = subj->line;
       fnref->start_column = fnref_start_column;
       fnref->end_column = fnref_end_column;
 
       // we then replace the opener with this new fnref node, the net effect
-      // being replacing the opening '[' text node with a `^footnote-ref` node.
+      // being replacing the opening '[' text node with a `^footnote-ref]` node.
       cmark_node_insert_before(opener->inl_text, fnref);
 
-      // sometimes, there may be several nodes between the opener '[', the '^'
-      // and the node holding the closing ']'. this happens for ex due to the
-      // autolink feature looking for links and splitting up text nodes when
-      // it encounters a 'w' in hopes of matching a 'www.' substring.
+      // sometimes, the footnote reference text gets parsed into multiple nodes
+      // i.e. '[^example]' parsed into '[', '^exam', 'ple]'.
+      // this happens for ex with the autolink extension. when the autolinker
+      // finds the 'w' character, it will split the text into multiple nodes
+      // in hopes of being able to match a 'www.' substring.
       //
       // because this function is called one character at a time via the
       // `parse_inlines` function, and the current subj->pos is pointing at the
       // closing ] brace, and because we copy all the text between the [ ]
-      // braces, any existing nodes after the opener should be superfluous,
-      // and we can walk thru the list and free them all up.
+      // braces, we should be able to safely ignore and delete any nodes after
+      // the opener->inl_text->next.
+      //
+      // therefore, here we walk thru the list and free them all up
       cmark_node *next_node;
       cmark_node *current_node = opener->inl_text->next;
       while(current_node) {
