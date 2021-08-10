@@ -649,7 +649,7 @@ This is some text![^1]. Other text.[^footnote].
 
 Here's a thing[^other-note].
 
-And another thing[^codeblock-note]. Footnotes can use lots of different characters.[^sphinx-of-black-quartz_judge-my-vow]
+And another thing[^codeblock-note]. Footnotes can use lots of different characters.[^sphinx-of-black-quartz_judge-my-vow-0123456789]
 
 This doesn't have a referent[^nope].
 
@@ -672,7 +672,7 @@ Hi!
 
     or, naturally, simple paragraphs.
 
-[^sphinx-of-black-quartz_judge-my-vow]: This works.
+[^sphinx-of-black-quartz_judge-my-vow-0123456789]: This works.
 
 [^unused]: This is unused.
 .
