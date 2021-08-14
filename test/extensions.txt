@@ -676,7 +676,7 @@ Hi! Footnote _definitions_ should be removed from the text, and reinserted at th
 [^unused]: This is unused, and will be removed.
 .
 <p>This is some text!<sup class="footnote-ref"><a href="#fn:1" id="fnref:1">1</a></sup>. Other text.<sup class="footnote-ref"><a href="#fn:citation" id="fnref:citation">2</a></sup>.</p>
-<p>This line tests that &quot;w&quot; doesn't break the citation reference (currently broken).[^widely-cited]. Footnotes can be referenced repeatedly; even if there's not a space between the <code>][</code>s, the footnotes won't be confused for a link reference (currently broken).<sup class="footnote-ref"><a href="#fn:citation" id="fnref:citation">2</a></sup> [^widely-cited]</p>
+<p>This line tests that &quot;w&quot; doesn't break the citation reference (currently broken).[^widely-cited]. Footnotes can be referenced repeatedly; even if there's not a space between the <code>][</code>s, the footnotes won't be confused for a link reference (currently broken).<sup class="footnote-ref"><a href="#fn:citation" id="fnref:citation:2">2</a></sup> [^widely-cited]</p>
 <p>Here's another thing<sup class="footnote-ref"><a href="#fn:codeblock-note" id="fnref:codeblock-note">3</a></sup>. Footnote references can use lots of different characters (currently broken).[^sphinx-of-black-quartz_judge-my-vow-0123456789] [^widely-cited]</p>
 <p>This doesn't have a referent[^nope].</p>
 <p>Hi! Footnote <em>definitions</em> should be removed from the text, and reinserted at the bottom.</p>
@@ -691,7 +691,7 @@ Hi! Footnote _definitions_ should be removed from the text, and reinserted at th
 </blockquote>
 <pre><code>as well as code blocks
 </code></pre>
-<p>or, naturally, simple paragraphs. <a href="#fnref:citation" class="footnote-backref">↩</a></p>
+<p>or, naturally, simple paragraphs. <a href="#fnref:citation" class="footnote-backref">↩</a> <a href="#fnref:citation:2" class="footnote-backref">↩<sup class="footnote-ref">2</sup></a></p>
 </li>
 <li id="fn:codeblock-note">
 <pre><code>this is now a code block (8 spaces indentation)
