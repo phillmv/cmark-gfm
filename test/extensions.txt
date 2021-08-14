@@ -647,9 +647,9 @@ Even with {"x":"y"} or 1 > 2 or whatever. Even **markdown**.
 ```````````````````````````````` example
 This is some text![^1]. Other text.[^citation].
 
-Here's a thing[^widely-cited].
+Here's a thing[^widely-cited]. Footnotes can be repeated.[^citation]
 
-And another thing[^codeblock-note]. Footnotes can use lots of different characters.[^sphinx-of-black-quartz_judge-my-vow-0123456789]
+And another thing[^codeblock-note]. Footnotes can use lots of different characters.[^sphinx-of-black-quartz_judge-my-vow-0123456789] [^citation]
 
 This doesn't have a referent[^nope].
 
@@ -675,8 +675,8 @@ Hi!
 [^unused]: This is unused.
 .
 <p>This is some text!<sup class="footnote-ref"><a href="#fn:1" id="fnref:1">1</a></sup>. Other text.<sup class="footnote-ref"><a href="#fn:citation" id="fnref:citation">2</a></sup>.</p>
-<p>Here's a thing<sup class="footnote-ref"><a href="#fn:widely-cited" id="fnref:widely-cited">3</a></sup>.</p>
-<p>And another thing<sup class="footnote-ref"><a href="#fn:codeblock-note" id="fnref:codeblock-note">4</a></sup>. Footnotes can use lots of different characters.<sup class="footnote-ref"><a href="#fn:sphinx-of-black-quartz_judge-my-vow-0123456789" id="fnref:sphinx-of-black-quartz_judge-my-vow-0123456789">5</a></sup></p>
+<p>Here's a thing<sup class="footnote-ref"><a href="#fn:widely-cited" id="fnref:widely-cited">3</a></sup>. Footnotes can be repeated.<sup class="footnote-ref"><a href="#fn:citation" id="fnref:citation:2">2</a></sup></p>
+<p>And another thing<sup class="footnote-ref"><a href="#fn:codeblock-note" id="fnref:codeblock-note">4</a></sup>. Footnotes can use lots of different characters.<sup class="footnote-ref"><a href="#fn:sphinx-of-black-quartz_judge-my-vow-0123456789" id="fnref:sphinx-of-black-quartz_judge-my-vow-0123456789">5</a></sup> <sup class="footnote-ref"><a href="#fn:citation" id="fnref:citation:3">2</a></sup></p>
 <p>This doesn't have a referent[^nope].</p>
 <p>Hi!</p>
 <section class="footnotes">
@@ -690,7 +690,7 @@ Hi!
 </blockquote>
 <pre><code>as well as code blocks
 </code></pre>
-<p>or, naturally, simple paragraphs. <a href="#fnref:citation" class="footnote-backref">↩</a></p>
+<p>or, naturally, simple paragraphs. <a href="#fnref:citation" class="footnote-backref">↩</a> <a href="#fnref:citation:2" class="footnote-backref">↩<sup class="footnote-ref">2</sup></a> <a href="#fnref:citation:3" class="footnote-backref">↩<sup class="footnote-ref">3</sup></a></p>
 </li>
 <li id="fn:widely-cited">
 <p>no code block here (spaces are stripped away) <a href="#fnref:widely-cited" class="footnote-backref">↩</a></p>
