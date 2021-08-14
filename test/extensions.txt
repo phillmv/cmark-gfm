@@ -645,27 +645,25 @@ Even with {"x":"y"} or 1 > 2 or whatever. Even **markdown**.
 ## Footnotes
 
 ```````````````````````````````` example
-This is some text![^1]. Other text.[^footnote].
+This is some text![^1]. Other text.[^citation].
 
-Here's a thing[^other-note].
+Here's a thing[^widely-cited].
 
 And another thing[^codeblock-note]. Footnotes can use lots of different characters.[^sphinx-of-black-quartz_judge-my-vow-0123456789]
 
 This doesn't have a referent[^nope].
 
 
-[^other-note]:       no code block here (spaces are stripped away)
+[^widely-cited]:       no code block here (spaces are stripped away)
 
 [^codeblock-note]:
         this is now a code block (8 spaces indentation)
 
-[^1]: Some *bolded* footnote definition.[^nested]
-
-[^nested]: Footnotes can be nested.
+[^1]: Some *bolded* footnote definition.
 
 Hi!
 
-[^footnote]:
+[^citation]:
     > Blockquotes can be in a footnote.
 
         as well as code blocks
@@ -684,7 +682,7 @@ Hi!
 <section class="footnotes">
 <ol>
 <li id="fn1">
-<p>Some <em>bolded</em> footnote definition.<sup class="footnote-ref"><a href="#fn6" id="fnref6">6</a></sup> <a href="#fnref1" class="footnote-backref">↩</a></p>
+<p>Some <em>bolded</em> footnote definition. <a href="#fnref1" class="footnote-backref">↩</a></p>
 </li>
 <li id="fn2">
 <blockquote>
@@ -704,9 +702,6 @@ Hi!
 </li>
 <li id="fn5">
 <p>This works. <a href="#fnref5" class="footnote-backref">↩</a></p>
-</li>
-<li id="fn6">
-<p>Footnotes can be nested. <a href="#fnref6" class="footnote-backref">↩</a></p>
 </li>
 </ol>
 </section>
