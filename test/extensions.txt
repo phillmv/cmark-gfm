@@ -645,16 +645,15 @@ Even with {"x":"y"} or 1 > 2 or whatever. Even **markdown**.
 ## Footnotes
 
 ```````````````````````````````` example
-This is some text![^1]. Other text.[^footnote].
+This is some text![^1]. Other text.[^citation].
 
-Here's a thing[^other-note].
+This line tests that "w" doesn't break the citation reference (currently broken).[^widely-cited]. Footnotes can be referenced repeatedly; even if there's not a space between the `][`s, the footnotes won't be confused for a link reference (currently broken).[^citation][^1] [^widely-cited]
 
-And another thing[^codeblock-note].
+Here's another thing[^codeblock-note]. Footnote references can use lots of different characters (currently broken).[^sphinx-of-black-quartz_judge-my-vow-0123456789] [^widely-cited]
 
 This doesn't have a referent[^nope].
 
-
-[^other-note]:       no code block here (spaces are stripped away)
+[^widely-cited]:       no code block here (spaces are stripped away). This footnote is cited three times, and so we should see three backrefs.
 
 [^codeblock-note]:
         this is now a code block (8 spaces indentation)
@@ -663,26 +662,28 @@ This doesn't have a referent[^nope].
 
 [^nested]: Footnotes can be nested.
 
-Hi!
+Hi! Footnote _definitions_ should be removed from the text, and reinserted at the bottom.
 
-[^footnote]:
+[^citation]:
     > Blockquotes can be in a footnote.
 
         as well as code blocks
 
     or, naturally, simple paragraphs.
 
-[^unused]: This is unused.
+[^sphinx-of-black-quartz_judge-my-vow-0123456789]: This works.
+
+[^unused]: This is unused, and will be removed.
 .
 <p>This is some text!<sup class="footnote-ref"><a href="#fn1" id="fnref1">1</a></sup>. Other text.<sup class="footnote-ref"><a href="#fn2" id="fnref2">2</a></sup>.</p>
-<p>Here's a thing<sup class="footnote-ref"><a href="#fn3" id="fnref3">3</a></sup>.</p>
-<p>And another thing<sup class="footnote-ref"><a href="#fn4" id="fnref4">4</a></sup>.</p>
+<p>This line tests that &quot;w&quot; doesn't break the citation reference (currently broken).[^widely-cited]. Footnotes can be referenced repeatedly; even if there's not a space between the <code>][</code>s, the footnotes won't be confused for a link reference (currently broken).<sup class="footnote-ref"><a href="#fn2" id="fnref2">2</a></sup> [^widely-cited]</p>
+<p>Here's another thing<sup class="footnote-ref"><a href="#fn3" id="fnref3">3</a></sup>. Footnote references can use lots of different characters (currently broken).[^sphinx-of-black-quartz_judge-my-vow-0123456789] [^widely-cited]</p>
 <p>This doesn't have a referent[^nope].</p>
-<p>Hi!</p>
+<p>Hi! Footnote <em>definitions</em> should be removed from the text, and reinserted at the bottom.</p>
 <section class="footnotes">
 <ol>
 <li id="fn1">
-<p>Some <em>bolded</em> footnote definition.<sup class="footnote-ref"><a href="#fn5" id="fnref5">5</a></sup> <a href="#fnref1" class="footnote-backref">↩</a></p>
+<p>Some <em>bolded</em> footnote definition.<sup class="footnote-ref"><a href="#fn4" id="fnref4">4</a></sup> <a href="#fnref1" class="footnote-backref">↩</a></p>
 </li>
 <li id="fn2">
 <blockquote>
@@ -693,15 +694,12 @@ Hi!
 <p>or, naturally, simple paragraphs. <a href="#fnref2" class="footnote-backref">↩</a></p>
 </li>
 <li id="fn3">
-<p>no code block here (spaces are stripped away) <a href="#fnref3" class="footnote-backref">↩</a></p>
-</li>
-<li id="fn4">
 <pre><code>this is now a code block (8 spaces indentation)
 </code></pre>
-<a href="#fnref4" class="footnote-backref">↩</a>
+<a href="#fnref3" class="footnote-backref">↩</a>
 </li>
-<li id="fn5">
-<p>Footnotes can be nested. <a href="#fnref5" class="footnote-backref">↩</a></p>
+<li id="fn4">
+<p>Footnotes can be nested. <a href="#fnref4" class="footnote-backref">↩</a></p>
 </li>
 </ol>
 </section>
