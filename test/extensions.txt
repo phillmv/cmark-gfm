@@ -683,7 +683,7 @@ Hi! Footnote _definitions_ should be removed from the text, and reinserted at th
 <section class="footnotes">
 <ol>
 <li id="fn1">
-<p>Some <em>bolded</em> footnote definition.<sup class="footnote-ref"><a href="#fnnested" id="fnrefnested">nested</a></sup> <a href="#fnref1" class="footnote-backref">↩</a></p>
+<p>Some <em>bolded</em> footnote definition.<sup class="footnote-ref"><a href="#fn4" id="fnref4">4</a></sup> <a href="#fnref1" class="footnote-backref">↩</a></p>
 </li>
 <li id="fn2">
 <blockquote>
@@ -697,6 +697,9 @@ Hi! Footnote _definitions_ should be removed from the text, and reinserted at th
 <pre><code>this is now a code block (8 spaces indentation)
 </code></pre>
 <a href="#fnref3" class="footnote-backref">↩</a>
+</li>
+<li id="fn4">
+<p>Footnotes can be nested. <a href="#fnref4" class="footnote-backref">↩</a></p>
 </li>
 </ol>
 </section>
